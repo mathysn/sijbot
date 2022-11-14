@@ -31,7 +31,7 @@ function loadEvents(client) {
             }
         }
     }
-    return console.log(table.toString(), "\nLoaded events");
+    return console.log(table.toString(), "\n");
 }
 
 module.exports = { loadEvents };
