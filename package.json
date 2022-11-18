@@ -20,6 +20,7 @@
     "ascii-table": "^0.0.9",
     "discord.js": "^14.6.0",
     "fs": "^0.0.1-security",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "undici": "^5.12.0"
   }
 }
