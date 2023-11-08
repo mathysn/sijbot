@@ -20,8 +20,6 @@ module.exports = {
         if(!list.length) {
             return interaction.reply(`No results found for **${term}**.`);
         }
-
-        console.log(typeof list[0].written_on);
         
         const urbanEmbed = new EmbedBuilder()
                             .setColor(0x5DCA6E)

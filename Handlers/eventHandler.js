@@ -26,7 +26,7 @@ function loadEvents(client) {
                 } else {
                     client.on(event.name, (...args) => event.execute(...args, client));
                 }
-                table.addRow(file, "loaded");
+                table.addRow(file, "  ✅");
                 continue;
             }
         }
