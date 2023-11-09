@@ -1,4 +1,4 @@
-const { ComponentType, EmbedBuilder, SlashCommandBuilder, ActionRowBuilder, SelectMenuBuilder } = require ('discord.js');
+const { ComponentType, EmbedBuilder, SlashCommandBuilder, ActionRowBuilder, StringSelectMenuBuilder} = require ('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -36,7 +36,7 @@ module.exports = {
 
         const components = (state) => [
             new ActionRowBuilder().addComponents(
-                new SelectMenuBuilder()
+                new StringSelectMenuBuilder()
                     .setCustomId("help-menu")
                     .setPlaceholder("Please select a category")
                     .setDisabled(state)
@@ -72,8 +72,8 @@ module.exports = {
             );
 
             const categoryEmbed = new EmbedBuilder()
-                .setTitle(`${formatString(directory)}`)
-                .setDescription(`All commands from the **${directory[0].toUpperCase()}${directory.slice(1).toLowerCase()}** category`)
+                .setTitle(`${emojis[directory.toLowerCase() || null]} ${formatString(directory)}`)
+                .setDescription(`All commands from the **${formatString(directory)}** category`)
                 .addFields(
                     category.commands.map((cmd) => {
                         return {
