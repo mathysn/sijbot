@@ -26,7 +26,7 @@ module.exports = {
                 };
             });
 
-            return{
+            return {
                 directory: formatString(dir),
                 commands: getCommands
             };
@@ -55,7 +55,8 @@ module.exports = {
 
         const initialMessage = await interaction.reply({
             embeds: [helpEmbed],
-            components: components(false)
+            components: components(false),
+            ephemeral: true
         });
 
         const filter = (interaction) => interaction.user.id === interaction.member.id;

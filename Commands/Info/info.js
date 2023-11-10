@@ -40,7 +40,7 @@ module.exports = {
             }));
 
             const userData = await fetch(`https://japi.rest/discord/v1/user/${user.id}`);
-            const { data } = await userData.join();
+            const { data } = await userData.json();
 
             if(data.public_flags_array) {
                 await Promise.all(data.public_flags_array.map(async badge => {
@@ -79,14 +79,13 @@ module.exports = {
                 .setThumbnail(user.displayAvatarURL())
                 .setImage(user.bannerURL({ dynamic: true, size: 1024 }))
                 .addFields(
-                    { name: 'General', value: `ID: \`${user.id}\`\nUsername: \`${user.username}\`\nDisplay Name: \`${user.displayName}\``},
-                    { name: 'Events', value: `Registered Date: \`${moment(user.createdAt).format('MMM DD, YYYY | h:mm A')}\`\nJoined Date: \`${moment(member.joinedAt).format('MMM DD, YYYY | h:mm A')}\``},
-                    { name: 'Badges', value: badges.join(' ') },
-                    // { name: 'ID', value: user.id },
-                    // { name: 'Username', value: user.username, inline: true },
-                    // { name: 'Display Name', value: user.displayName, inline: true },
-                    // { name: 'Created At', value: moment(user.createdAt).format('ll'), inline: true },
-                    // { name: 'Joined At', value: moment(member.joinedAt).format('ll'), inline: true },
+                    { name: 'ID', value: user.id, inline: true },
+                    { name: 'Username', value: user.username, inline: true },
+                    { name: 'Display Name', value: user.displayName, inline: true },
+                    { name: 'Created At', value: moment(user.createdAt).format('ll'), inline: true },
+                    { name: 'Joined At', value: moment(member.joinedAt).format('ll'), inline: true },
+                    { name: `Badges [${badges.length}]`, value: badges.join(' '), inline: true },
+
                 )
             interaction.editReply({
                 embeds: [userinfoEmbed]

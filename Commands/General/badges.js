@@ -36,7 +36,7 @@ module.exports = {
         }));
 
         const userData = await fetch(`https://japi.rest/discord/v1/user/${user.id}`);
-        const { data } = await userData.join(); // FIXME: check whats wrong: https://www.youtube.com/watch?v=Ay4ZUFSQIWs
+        const { data } = await userData.json();
 
         if(data.public_flags_array) {
             await Promise.all(data.public_flags_array.map(async badge => {
@@ -68,8 +68,8 @@ module.exports = {
             }
 
             const embed = new EmbedBuilder()
-                .setColor("Blue")
-                .setTitle(`${user.username}'s badges`)
+                .setColor(0x5DCA6E)
+                .setTitle(`${user.displayName}'s badges`)
                 .setDescription(`${badges.join(' ') || `**No badges found**`}`)
 
             await interaction.editReply({

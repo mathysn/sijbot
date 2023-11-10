@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, CommandInteraction, PermissionFlagsBits, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, CommandInteraction, PermissionFlagsBits, EmbedBuilder, PermissionsBitField} = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -15,9 +15,12 @@ module.exports = {
         .setDescription("Select a member to clear their messages")
         .setRequired(false)
         ),
-    
         async execute(interaction) {
+            await interaction.deferReply({ ephemeral: true });
             const {channel, options} = interaction;
+            if(!interaction.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
+                return await interaction.editReply({content: "You must have the Manage Messages permission to run this command!"});
+            }
 
             const amount = options.getInteger('amount');
             const target = options.getUser('target');
@@ -25,9 +28,6 @@ module.exports = {
             const messages = await channel.messages.fetch({
                 limit: amount + 1
             });
-
-            const res = new EmbedBuilder()
-                .setColor(0xF1C40F)
             
             if (target) {
                 let i = 0;
@@ -41,13 +41,11 @@ module.exports = {
                 });
 
                 await channel.bulkDelete(filtered).then(messages => {
-                    res.setDescription(`Successfully deleted ${messages.size} messages from ${target}.`);
-                    interaction.reply({embeds: [res]});
-                })
+                    interaction.editReply({ content: `Successfully deleted ${messages.size} messages from ${target}.` });
+                });
             } else {
                 await channel.bulkDelete(amount, true).then(messages => {
-                    res.setDescription(`Successfully deleted ${messages.size} messages from the channel.`);
-                    interaction.reply({embeds: [res]});
+                    interaction.editReply({ content: `Successfully deleted ${messages.size} messages from the channel.` });
                 });
             }
         }
