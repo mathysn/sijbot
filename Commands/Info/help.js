@@ -32,7 +32,9 @@ module.exports = {
             };
         });
 
-        const helpEmbed = new EmbedBuilder().setDescription("Please choose a category in the dropdown menu.");
+        const helpEmbed = new EmbedBuilder()
+            .setColor(0x5DCA6E)
+            .setDescription("Please choose a category in the dropdown menu.");
 
         const components = (state) => [
             new ActionRowBuilder().addComponents(
@@ -55,8 +57,7 @@ module.exports = {
 
         const initialMessage = await interaction.reply({
             embeds: [helpEmbed],
-            components: components(false),
-            ephemeral: true
+            components: components(false)
         });
 
         const filter = (interaction) => interaction.user.id === interaction.member.id;
@@ -73,6 +74,7 @@ module.exports = {
             );
 
             const categoryEmbed = new EmbedBuilder()
+                .setColor(0x5DCA6E)
                 .setTitle(`${emojis[directory.toLowerCase() || null]} ${formatString(directory)}`)
                 .setDescription(`All commands from the **${formatString(directory)}** category`)
                 .addFields(

@@ -4,14 +4,17 @@ const moment = require('moment');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("info")
-        .setDescription("Get info about an user or the server")
+        .setDescription("Get information about an user or the server")
         .addSubcommand(user => user
             .setName("user")
-            .setDescription("Get the information about an user")
+            .setDescription("Get information about an user")
             .addUserOption(option => option
                 .setName("target")
                 .setDescription("Select the user")
-                .setRequired(true))),
+                .setRequired(true)))
+        .addSubcommand(server => server
+            .setName("server")
+            .setDescription("Get information about the server")),
     async execute(interaction) {
         const { options } = interaction;
         if(options.getSubcommand() === 'user') {
@@ -72,7 +75,7 @@ module.exports = {
                 }
             }
 
-            const userinfoEmbed = new EmbedBuilder()
+            const userInfoEmbed = new EmbedBuilder()
                 .setColor(0x5DCA6E)
                 .setTitle('💡 | User Info')
                 .setDescription(`Information about ${user.toString()}`)
@@ -88,7 +91,26 @@ module.exports = {
 
                 )
             interaction.editReply({
-                embeds: [userinfoEmbed]
+                embeds: [userInfoEmbed]
+            });
+        } else if(options.getSubcommand() === "server") {
+            await interaction.deferReply();
+
+            const server = interaction.guild;
+            console.log(server.icon); //debug
+
+            const serverInfoEmbed = new EmbedBuilder()
+                .setColor(0x5DCA6E)
+                .setTitle('Server Info')
+                .setDescription(`Information about **${server.toString()}**`)
+                .setThumbnail(server.iconURL()) // FIXME: get the server icon
+                .addFields(
+                    { name: 'ID', value: server.id, inline: true},
+                    { name: 'Name', value: server.name, inline: true},
+                    { name: 'Created At', value: moment(server.createdAt).format('ll'), inline: true},
+                )
+            interaction.editReply({
+                embeds: [serverInfoEmbed]
             });
         }
     }

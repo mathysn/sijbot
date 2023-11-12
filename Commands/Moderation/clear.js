@@ -3,23 +3,25 @@ const { SlashCommandBuilder, CommandInteraction, PermissionFlagsBits, EmbedBuild
 module.exports = {
     data: new SlashCommandBuilder()
     .setName("clear")
-    .setDescription("Clear a specific number of messages from a member or a channel.")
+    .setDescription("Clear a specific number of messages from a member or a channel")
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
     .addIntegerOption(option => option
         .setName("amount")
-        .setDescription("Amount of messages to clear")
+        .setDescription("The amount of messages you want to clear")
         .setRequired(true)
         )
     .addUserOption(option => option
         .setName("target")
-        .setDescription("Select a member to clear their messages")
+        .setDescription("The user whose messages you want to clear")
         .setRequired(false)
         ),
         async execute(interaction) {
             await interaction.deferReply({ ephemeral: true });
-            const {channel, options} = interaction;
+
+            const { channel, options } = interaction;
+
             if(!interaction.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
-                return await interaction.editReply({content: "You must have the Manage Messages permission to run this command!"});
+                return await interaction.editReply({ content: "You must have the Manage Messages permission to run this command!" });
             }
 
             const amount = options.getInteger('amount');

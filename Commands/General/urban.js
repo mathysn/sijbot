@@ -5,7 +5,7 @@ const moment = require('moment');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("urban")
-        .setDescription("Get a definition")
+        .setDescription("Get the definition of a word")
         .addStringOption(option => option
             .setName("term")
             .setDescription("What do you want the definition of?")
@@ -23,14 +23,14 @@ module.exports = {
         
         const urbanEmbed = new EmbedBuilder()
                             .setColor(0x5DCA6E)
-                            .setTitle(`${term}`)
+                            .setTitle(`🤓 | ${term}`)
                             .addFields(
                                 { name: 'Definition', value: list[0].definition },
                                 { name: 'Example', value: list[0].example },
                                 { name: 'Likes', value: `${list[0].thumbs_up} 👍`, inline: true },
                                 { name: 'Dislikes', value: `${list[0].thumbs_down} 👎`, inline: true },
                             )
-                            .setFooter({text: `Sent by ${list[0].author} on ${moment(list[0].written_on).format("MM/DD/YYYY, hh:mm:ss")}`})
+                            .setFooter({text: `Sent by ${list[0].author} on ${moment(list[0].written_on).format("MM/DD/YYYY, h:mm:ss A")}`})
         interaction.reply({
             embeds: [urbanEmbed]
         });
