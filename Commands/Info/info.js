@@ -70,7 +70,7 @@ module.exports = {
                     }
                 }
 
-                if (!user.discriminator || user.discriminator === 0 || user.tag === `${user.username}#0`) {
+                if (!user.discriminator || user.discriminator === '0' || user.tag === `${user.username}#0`) {
                     badges.push('<:Knownas:1172306046535094355>');
                 }
             }
@@ -109,7 +109,7 @@ module.exports = {
                     { name: 'Name', value: server.name, inline: true},
                     { name: 'Created At', value: moment(server.createdAt).format('ll'), inline: true},
                 )
-            interaction.editReply({
+            await interaction.editReply({
                 embeds: [serverInfoEmbed]
             });
         }
