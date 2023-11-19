@@ -97,17 +97,31 @@ module.exports = {
             await interaction.deferReply();
 
             const server = interaction.guild;
-            console.log(server.icon); //debug
+            const icon = server.iconURL() || "https://cdn.discordapp.com/attachments/1175850664518230077/1175850674513252442/discord-logo-4-1.png?ex=656cbb47&is=655a4647&hm=ea530f29de37b2d6e982d1d3c516674f14d0706a7939a07a3220bcce2193d2c4&";
+            const roles = server.roles.cache.size;
+            const emojis = server.emojis.cache.size;
+
+            let baseVerification = server.verificationLevel;
+            if(baseVerification === 0) baseVerification = "None";
+            if(baseVerification === 1) baseVerification = "Low";
+            if(baseVerification === 2) baseVerification = "Medium";
+            if(baseVerification === 3) baseVerification = "High";
+            if(baseVerification === 4) baseVerification = "Very High";
 
             const serverInfoEmbed = new EmbedBuilder()
                 .setColor(0x5DCA6E)
-                .setTitle('Server Info')
-                .setDescription(`Information about **${server.toString()}**`)
-                .setThumbnail(server.iconURL()) // FIXME: get the server icon
+                .setAuthor({ name: server.name, iconURL: icon})
+                .setThumbnail(icon)
+                .setFooter({ text: `Server ID: ${server.id}` })
                 .addFields(
-                    { name: 'ID', value: server.id, inline: true},
-                    { name: 'Name', value: server.name, inline: true},
-                    { name: 'Created At', value: moment(server.createdAt).format('ll'), inline: true},
+                    { name: 'Name', value: server.name, inline: false },
+                    { name: 'Created', value: `<t:${parseInt(server.createdTimestamp / 1000)}:R>`, inline: true },
+                    { name: 'Server Owner', value: `<@${server.ownerId}>`, inline: true },
+                    { name: 'Member Count', value: `${server.memberCount}`, inline: true },
+                    { name: 'Role Count', value: `${roles}`, inline: true },
+                    { name: 'Emoji Count', value: `${emojis}`, inline: true },
+                    { name: 'Verification Level', value: `${baseVerification}`, inline: true },
+                    { name: 'Server Boosts', value: `${server.premiumSubscriptionCount}`, inline: true },
                 )
             await interaction.editReply({
                 embeds: [serverInfoEmbed]
